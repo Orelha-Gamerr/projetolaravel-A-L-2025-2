@@ -47,10 +47,11 @@
         <div class="col">
             <label for="categoria">Categoria do serviço</label>
             <select name="categoria_id">
+                <option value="">--Selecione--</option>
                 @foreach ($categorias as $item)
                     <option value="{{ $item->id }}"
                         {{ old('categoria_id', $dado->categoria_id ?? '') == $item->id ? 'selected' : '' }}>
-                        {{ $item->nome }} 
+                        {{ $item->nome }}
                     </option>
                 @endforeach
             </select>
