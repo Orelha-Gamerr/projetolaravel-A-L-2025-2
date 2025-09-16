@@ -1,12 +1,12 @@
 @extends('base')
-@section('titulo', 'Listagem de Serviço')
+@section('titulo', 'Listagem de Aluno')
 @section('conteudo')
 
-    <h3>Listagem de Serviço</h3>
+    <h3>Listagem de Cliente</h3>
 
     <div class="row">
         <div class="col">
-            <form action="{{ route('servico.search')}}" method="post">
+            <form action="{{ route('cliente.search')}}" method="post">
                 @csrf
                 <div class="row">
                     <div class="col-md-3">
@@ -26,7 +26,7 @@
                         <button class="btn btn-success" type="submit"> <i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
                     </div>
                     <div class="col-md-2">
-                        <a class="btn btn-warning" href="{{ url('servico/create')}}"><i class="fa-solid fa-plus"></i> Cadastrar</a>
+                        <a class="btn btn-warning" href="{{ url('cliente/create')}}"><i class="fa-solid fa-plus"></i> Cadastrar</a>
                     </div>
                 </div>
             </form>
@@ -54,9 +54,9 @@
                     <td>{{$item->nome}}</td>
                     <td>{{$item->cpf}}</td>
                     <td>{{$item->telefone}}</td>
-                    <td> <a class="btn btn-sm btn-primary" href="{{ route('servico.edit', $item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                    <td> <a class="btn btn-sm btn-primary" href="{{ route('cliente.edit', $item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td>
-                        <form action="{{ route('servico.destroy',$item->id) }}" method="post">
+                        <form action="{{ route('cliente.destroy',$item->id) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deseja remover o registro?')"><i class="fas fa-trash"></i></button>

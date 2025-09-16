@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Servico;
 use App\Models\CategoriaServico;
 use Illuminate\Http\Request;
+use App\Models\Cliente;
 
 class ServicoController extends Controller
 {
@@ -24,9 +25,12 @@ class ServicoController extends Controller
     public function create()
     {
         $categorias = CategoriaServico::orderBy('nome')->get();
+        $clientes = Cliente::all(); // pega todos os clientes
+
 
         return view('servico.form', [
-            'categorias' => $categorias
+            'categorias' => $categorias,
+            'cliente' => $clientes, // aqui definimos a variável para a view
         ]);
     }
 
@@ -70,10 +74,12 @@ class ServicoController extends Controller
     public function edit(string $id)
     {
         $dado = Servico::findOrFail($id);
+        $clientes = Cliente::all();
         $categorias = CategoriaServico::orderBy('nome')->get();
 
         return view('servico.form', [
             'dado' => $dado,
+            'cliente' => $clientes,
             'categorias' => $categorias
         ]);
     }
