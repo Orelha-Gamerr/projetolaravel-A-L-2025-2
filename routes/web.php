@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CarroController;
 
 
 Route::get('/', function () {
@@ -24,3 +25,11 @@ Route::get('/cliente/edit/{id}', [ClienteController::class, 'edit'])->name('clie
 Route::put('/cliente/update/{id}', [ClienteController::class, 'update'])->name('cliente.update');
 Route::post('/cliente/search', [ClienteController::class, 'search'])->name('cliente.search');
 Route::delete('/cliente/{id}', [ClienteController::class, 'destroy'])->name('cliente.destroy');
+
+Route::get('/carro', [CarroController::class, 'index'])->name('carro.index');
+Route::get('/carro/create', [CarroController::class, 'create'])->name('carro.create');
+Route::post('/carro', [CarroController::class, 'store'])->name('carro.store');
+Route::get('/carro/edit/{id}', [CarroController::class, 'edit'])->name('carro.edit');
+Route::put('/carro/update/{id}', [CarroController::class, 'update'])->name('carro.update');
+Route::post('/carro/search', [CarroController::class, 'search'])->name('carro.search');
+Route::delete('/carro/{id}', [CarroController::class, 'destroy'])->name('carro.destroy');

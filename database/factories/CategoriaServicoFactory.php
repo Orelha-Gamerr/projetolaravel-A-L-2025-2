@@ -19,7 +19,7 @@ class CategoriaServicoFactory extends Factory
         return [
             'nome' => $this->faker->unique()->randomElement([
                 'MOTOR',
-                'CÃMBIO',
+                'CÂMBIO',
                 'ILUMINAÇÃO',
                 'ESCAPAMENTO',
                 'SUSPENSÃO',
