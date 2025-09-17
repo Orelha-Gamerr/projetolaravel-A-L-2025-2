@@ -20,4 +20,8 @@ class Servico extends Model
     {
         return $this->belongsTo(CategoriaServico::class, 'categoria_id');
     }
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categoria_servicos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
+            $table->integer('nivel');
             $table->timestamps();
         });
     }

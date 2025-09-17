@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Cliente;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,17 +11,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ClienteFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
     public function definition(): array
     {
         return [
             'nome' => $this->faker->name,
             'cpf' => $this->faker->unique()->numerify('###########'),
-            'telefone' => $this->faker->unique()->numerify('(##) #####-####'),
+            'telefone' => $this->faker->phoneNumber,
         ];
     }
 }
