@@ -22,7 +22,7 @@
 
     <div class="row">
         <div class="col">
-            <label for="cliente">Cliente:</label>
+            <label for="cliente">Cliente:</label> <br>
             <select name="cliente_id" id="cliente">
                 <option value="">--Selecione--</option>
                 @foreach ($cliente as $item)
@@ -37,11 +37,11 @@
         </div>
         <div class="col">
             <label for="cpf">Cpf:</label>
-            <input type="text" id="cpf" name="cpf" value="{{ old('cpf', $dado->cliente->cpf ?? '') }}" readonly>
+            <input type="text" id="cpf" name="cpf" class="form-control-plaintext" value="{{ old('cpf', $dado->cliente->cpf ?? '') }}" readonly>
         </div>
         <div class="col">
             <label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" name="telefone" value="{{ old('telefone', $dado->cliente->telefone ?? '') }}" readonly>
+            <input type="text" id="telefone" name="telefone" class="form-control-plaintext" value="{{ old('telefone', $dado->cliente->telefone ?? '') }}" readonly>
         </div>
 
         <div class="col">

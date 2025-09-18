@@ -49,8 +49,8 @@
             @foreach ($dado as $item)
                 <tr>
                     <td>{{$item->id}}</td>
-                    <td>{{$item->cliente}}</td>
-                    <td>{{$item->categoria}}</td>
+                    <td>{{ $item->cliente->nome ?? '' }}</td>
+                    <td>{{ $item->categoria->nome ?? '' }}</td>
                     <td> <a class="btn btn-sm btn-primary" href="{{ route('servico.edit', $item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td>
                         <form action="{{ route('servico.destroy',$item->id) }}" method="post">
