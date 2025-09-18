@@ -7,7 +7,7 @@ use App\Http\Controllers\CarroController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::get('/servico', [ServicoController::class, 'index'])->name('servico.index');

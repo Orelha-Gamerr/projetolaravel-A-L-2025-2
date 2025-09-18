@@ -3,6 +3,7 @@
 @section('conteudo')
 
     <h3>Listagem de Serviço</h3>
+    <a href="{{ url('')}}" class="btn btn-primary"><i class="fa-solid fa-house"></i> Tela inicial</a>
 
     <div class="row">
         <div class="col">
@@ -61,6 +62,7 @@
                     </td>
                 </tr>
             @endforeach
+            
         </tbody>
     </table>
 
