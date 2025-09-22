@@ -6,6 +6,7 @@ use App\Models\Servico;
 use App\Models\CategoriaServico;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use App\Models\Carro;
 
 class ServicoController extends Controller
 {
@@ -25,11 +26,13 @@ class ServicoController extends Controller
     public function create()
     {
         $categorias = CategoriaServico::orderBy('nome')->get();
+        $carro = Carro::orderBy('nome')->get();
         $clientes = Cliente::all(); // pega todos os clientes
 
 
         return view('servico.form', [
             'categorias' => $categorias,
+            'carro' => $carro,
             'cliente' => $clientes, // aqui definimos a variável para a view
         ]);
     }
@@ -41,10 +44,12 @@ class ServicoController extends Controller
     private function validateRequest(Request $request)
     {
         $request->validate([
-            'cliente' => 'required',
+            'cliente_id' => 'required',
+            'carro_id' => 'required',
             'categoria_id' => 'required',
         ], [
-            'cliente.required' => 'O cliente é obrigatório',
+            'cliente_id.required' => 'O cliente é obrigatório',
+            'carro_id.required' => 'O carro é obrigatório',
             'categoria_id.required' => 'A categoria é obrigatória',
         ]);
     }
@@ -75,11 +80,13 @@ class ServicoController extends Controller
     {
         $dado = Servico::findOrFail($id);
         $clientes = Cliente::all();
+        $carros = Carro::all();
         $categorias = CategoriaServico::orderBy('nome')->get();
 
         return view('servico.form', [
             'dado' => $dado,
             'cliente' => $clientes,
+            'carro' => $carros,
             'categorias' => $categorias
         ]);
     }

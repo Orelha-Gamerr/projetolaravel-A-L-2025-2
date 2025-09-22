@@ -42,8 +42,34 @@
         <div class="col">
             <label for="telefone">Telefone:</label>
             <input type="text" id="telefone" name="telefone" class="form-control-plaintext" value="{{ old('telefone', $dado->cliente->telefone ?? '') }}" readonly>
-        </div>
+        </div>        
+    </div>
 
+    <div class="row">
+        <div class="col">
+            <label for="carro">Carro:</label> <br>
+            <select name="carro_id" id="carro">
+                <option value="">--Selecione--</option>
+                @foreach ($carro as $item)
+                    <option value="{{ $item->id }}"
+                        data-marca="{{ $item->marca }}"
+                        data-modelo="{{ $item->modelo }}"
+                        {{ old('carro_id', $dado->carro_id ?? '') == $item->id ? 'selected' : '' }}>
+                        {{ $item->placa }} 
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col">
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca" class="form-control-plaintext" value="{{ old('marca', $dado->carro->marca ?? '') }}" readonly>
+        </div>
+        <div class="col">
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo" class="form-control-plaintext" value="{{ old('modelo', $dado->carro->modelo ?? '') }}" readonly>
+        </div>
+    </div>
+    <div class="row">
         <div class="col">
             <label for="categoria">Categoria do serviço</label>
             <select name="categoria_id">
@@ -56,12 +82,11 @@
                 @endforeach
             </select>
         </div>
-
-        <div class="row mt-4">
-            <div class="col">
-                <button type="submit" class="btn btn-success">{{ !empty($dado->id) ? 'Atualizar' : 'Salvar' }}</button>
-                <a href="{{ url('servico')}}" class="btn btn-primary">Voltar</a>
-            </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <button type="submit" class="btn btn-success">{{ !empty($dado->id) ? 'Atualizar' : 'Salvar' }}</button>
+            <a href="{{ url('servico')}}" class="btn btn-primary">Voltar</a>
         </div>
     </div>
 </form>
@@ -86,5 +111,27 @@
         }
     });
 </script>
+
+<script>
+    const carroSelect = document.getElementById('carro');
+    const marcaInput = document.getElementById('marca');
+    const modeloInput = document.getElementById('modelo');
+
+    carroSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        marcaInput.value = selectedOption.dataset.marca || '';
+        modeloInput.value = selectedOption.dataset.modelo || '';
+    });
+
+    // Preencher se já tiver carro selecionado ao carregar a página
+    window.addEventListener('DOMContentLoaded', function() {
+        const selectedOption = carroSelect.options[carroSelect.selectedIndex];
+        if(selectedOption.value) {
+            marcaInput.value = selectedOption.dataset.marca || '';
+            modeloInput.value = selectedOption.dataset.modelo || '';
+        }
+    });
+</script>
+
 
 @stop

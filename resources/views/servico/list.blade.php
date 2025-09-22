@@ -14,6 +14,8 @@
                         <label for="tipo">Tipo:</label>
                         <select name="tipo" class="form-select">
                             <option value="cliente">Cliente</option>
+                            <option value="telefone">Telefone</option>
+                            <option value="placa">Veiculo</option>
                             <option value="categoria">Categoria</option>
                         </select>
                     </div>
@@ -41,6 +43,8 @@
             <tr>
                 <td>#ID</td>
                 <td>Cliente</td>
+                <td>Telefone</td>
+                <td>Veiculo</td>
                 <td>Categoria</td>
                 <td>Ação</td>
                 <td>Ação</td>
@@ -51,6 +55,8 @@
                 <tr>
                     <td>{{$item->id}}</td>
                     <td>{{ $item->cliente->nome ?? '' }}</td>
+                    <td>{{ $item->cliente->telefone ?? '' }}</td>
+                    <td>{{ $item->carro->placa ?? '' }}</td>
                     <td>{{ $item->categoria->nome ?? '' }}</td>
                     <td> <a class="btn btn-sm btn-primary" href="{{ route('servico.edit', $item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td>
