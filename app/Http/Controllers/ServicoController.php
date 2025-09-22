@@ -62,7 +62,7 @@ class ServicoController extends Controller
 
         Servico::create($data);
 
-        return redirect()->route('servico');
+        return redirect()->route('servico.index');
     }
 
     /**
@@ -103,7 +103,7 @@ class ServicoController extends Controller
 
         Servico::updateOrCreate(['id' => $id], $data);
 
-        return redirect('servico');
+        return redirect()->route('servico.index');
     }
 
     /**
@@ -115,7 +115,7 @@ class ServicoController extends Controller
 
         $dado->delete();
 
-        return redirect('servico');
+        return redirect()->route('servico.index');
     }
 
     public function search(Request $request)
