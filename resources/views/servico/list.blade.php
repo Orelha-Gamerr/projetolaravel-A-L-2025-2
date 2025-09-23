@@ -46,6 +46,7 @@
                 <td>Telefone</td>
                 <td>Veiculo</td>
                 <td>Categoria</td>
+                <td>Preço</td>
                 <td>Ação</td>
                 <td>Ação</td>
             </tr>
@@ -58,6 +59,7 @@
                     <td>{{ $item->cliente->telefone ?? '' }}</td>
                     <td>{{ $item->carro->placa ?? '' }}</td>
                     <td>{{ $item->categoria->nome ?? '' }}</td>
+                    <td>{{ $item->valor ?? '' }}</td>
                     <td> <a class="btn btn-sm btn-primary" href="{{ route('servico.edit', $item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td>
                         <form action="{{ route('servico.destroy',$item->id) }}" method="post">

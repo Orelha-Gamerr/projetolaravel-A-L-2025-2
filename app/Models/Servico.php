@@ -14,7 +14,14 @@ class Servico extends Model
     protected $fillable = [
         'cliente_id',
         'carro_id',
-        'categoria_id'
+        'categoria_id',
+        'descricao',
+        'data_servico',
+        'valor',
+    ];
+
+    protected $casts = [
+        'data_servico' => 'date',
     ];
 
     public function categoria()

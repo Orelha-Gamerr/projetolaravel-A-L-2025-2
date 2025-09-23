@@ -83,6 +83,22 @@
             </select>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <label for="descricao">Descrição do serviço:</label>
+            <textarea name="descricao" id="descricao" cols="30" rows="3" class="form-control">{{ old('descricao', $dado->descricao ?? '') }}</textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="data_servico">Data do serviço:</label>
+            <input type="date" name="data_servico" id="data_servico" class="form-control" value="{{ old('data_servico', isset($dado->data_servico) ? $dado->data_servico->format('Y-m-d') : '') }}">
+        </div>
+        <div class="col">
+            <label for="valor">Valor:</label>
+            <input type="text" name="valor" id="valor" class="form-control" value="{{ old('valor', $dado->valor ?? '') }}">
+        </div>
+    </div>
     <div class="row mt-4">
         <div class="col">
             <button type="submit" class="btn btn-success">{{ !empty($dado->id) ? 'Atualizar' : 'Salvar' }}</button>

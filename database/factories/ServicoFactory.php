@@ -14,7 +14,10 @@ class ServicoFactory extends Factory
         return [
             'nome' => $this->faker->sentence(2), // "troca pneus"
             'cliente_id' => Cliente::inRandomOrder()->first()->id ?? Cliente::factory(),
-             'categoria_id' => CategoriaServico::inRandomOrder()->first()->id ?? CategoriaServico::factory(),
+            'categoria_id' => CategoriaServico::inRandomOrder()->first()->id ?? CategoriaServico::factory(),
+            'descricao' => $this->faker->text(200),
+            'data_servico' => $this->faker->date(),
+            'valor' => $this->faker->randomFloat(2, 50, 1000),
         ];
     }
 }
