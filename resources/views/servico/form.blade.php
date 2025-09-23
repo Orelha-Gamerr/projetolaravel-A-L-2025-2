@@ -44,8 +44,15 @@
             <input type="text" id="telefone" name="telefone" class="form-control-plaintext" value="{{ old('telefone', $dado->cliente->telefone ?? '') }}" readonly>
         </div>        
     </div>
-
     <div class="row">
+        <div class="col">
+            <a href="{{ url('cliente/create')}}" class="btn btn-outline-primary btn-sm">
+                <i class="fa-solid fa-user-plus"></i> Cliente ainda não cadastrado?
+            </a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
         <div class="col">
             <label for="carro">Carro:</label> <br>
             <select name="carro_id" id="carro">
@@ -71,6 +78,14 @@
     </div>
     <div class="row">
         <div class="col">
+            <a href="{{ url('carro/create')}}" class="btn btn-outline-secondary btn-sm">
+                <i class="fa-solid fa-car"></i> Carro ainda não cadastrado?
+            </a>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
             <label for="categoria">Categoria do serviço</label>
             <select name="categoria_id">
                 <option value="">--Selecione--</option>
@@ -83,7 +98,7 @@
             </select>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-2">
         <div class="col">
             <label for="descricao">Descrição do serviço:</label>
             <textarea name="descricao" id="descricao" cols="30" rows="3" class="form-control">{{ old('descricao', $dado->descricao ?? '') }}</textarea>

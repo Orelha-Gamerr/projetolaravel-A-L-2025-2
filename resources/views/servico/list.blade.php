@@ -44,8 +44,10 @@
                 <td>#ID</td>
                 <td>Cliente</td>
                 <td>Telefone</td>
+                <td>Data</td>
                 <td>Veiculo</td>
                 <td>Categoria</td>
+                <td>Descrição</td>
                 <td>Preço</td>
                 <td>Ação</td>
                 <td>Ação</td>
@@ -57,8 +59,33 @@
                     <td>{{$item->id}}</td>
                     <td>{{ $item->cliente->nome ?? '' }}</td>
                     <td>{{ $item->cliente->telefone ?? '' }}</td>
+                    <td>{{ $item->data_servico ? $item->data_servico->format('d/m/Y') : '' }}</td>
                     <td>{{ $item->carro->placa ?? '' }}</td>
                     <td>{{ $item->categoria->nome ?? '' }}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#descricaoModal{{ $item->id }}">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="descricaoModal{{ $item->id }}" tabindex="-1" aria-labelledby="descricaoLabel{{ $item->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="descricaoLabel{{ $item->id }}">Descrição do Serviço {{ $item->id }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ $item->descricao ?? 'Sem descrição' }}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
                     <td>{{ $item->valor ?? '' }}</td>
                     <td> <a class="btn btn-sm btn-primary" href="{{ route('servico.edit', $item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td>
