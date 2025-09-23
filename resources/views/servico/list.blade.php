@@ -66,8 +66,6 @@
                         <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#descricaoModal{{ $item->id }}">
                             <i class="fa-solid fa-eye"></i>
                         </button>
-
-                        <!-- Modal -->
                         <div class="modal fade" id="descricaoModal{{ $item->id }}" tabindex="-1" aria-labelledby="descricaoLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
