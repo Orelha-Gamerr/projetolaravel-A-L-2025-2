@@ -18,6 +18,8 @@ class ClienteFactory extends Factory
             'nome' => $this->faker->name,
             'cpf' => $this->faker->unique()->numerify('###########'),
             'telefone' => $this->faker->phoneNumber,
+            'email' => $this->faker->unique()->safeEmail,
+            'endereco' => $this->faker->address,
         ];
     }
 }

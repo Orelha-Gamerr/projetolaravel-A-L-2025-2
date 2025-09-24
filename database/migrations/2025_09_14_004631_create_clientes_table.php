@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nome');
             $table->string('cpf');
             $table->string('telefone');
+            $table->string('email');
+            $table->string('endereco');
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@
                             <option value="nome">Nome</option>
                             <option value="cpf">CPF</option>
                             <option value="telefone">Telefone</option>
+                            <option value="email">Email</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -44,6 +45,8 @@
                 <td>Nome</td>
                 <td>CPF</td>
                 <td>Telefone</td>
+                <td>Email</td>
+                <td>Endereço</td>
                 <td>Ação</td>
                 <td>Ação</td>
             </tr>
@@ -55,6 +58,8 @@
                     <td>{{$item->nome}}</td>
                     <td>{{$item->cpf}}</td>
                     <td>{{$item->telefone}}</td>
+                    <td>{{$item->email}}</td>
+                    <td>{{$item->endereco}}</td>
                     <td> <a class="btn btn-sm btn-primary" href="{{ route('cliente.edit', $item->id) }}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                     <td>
                         <form action="{{ route('cliente.destroy',$item->id) }}" method="post">
