@@ -111,7 +111,7 @@
         </div>
         <div class="col">
             <label for="valor">Valor:</label>
-            <input type="text" name="valor" id="valor" class="form-control" value="{{ old('valor', $dado->valor ?? '') }}">
+            <input type="number" name="valor" id="valor" class="form-control" value="{{ old('valor', $dado->valor ?? '') }}">
         </div>
     </div>
     <div class="row mt-4">

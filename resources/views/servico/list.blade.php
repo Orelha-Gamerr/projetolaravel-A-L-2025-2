@@ -100,7 +100,7 @@
                             </div>
                         </td>
 
-                        <td>R$ {{ number_format($item->valor ?? 0, 2, ',', '.') }}</td>
+                        <td>R$ {{ number_format((float) ($item->valor ?? 0), 2, ',', '.') }}</td>
 
                         <!-- Editar -->
                         <td class="text-center">
