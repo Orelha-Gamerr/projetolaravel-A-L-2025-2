@@ -23,7 +23,7 @@
                     <select name="tipo" class="form-select">
                         <option value="cliente">Cliente</option>
                         <option value="telefone">Telefone</option>
-                        <option value="placa">Veículo</option>
+                        <option value="placa">Placa</option>
                         <option value="categoria">Categoria</option>
                     </select>
                 </div>

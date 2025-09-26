@@ -120,16 +120,46 @@ class ServicoController extends Controller
 
     public function search(Request $request)
     {
-        if (!empty($request->valor)) {
-            $dado = Servico::where(
-                $request->tipo,
-                'like',
-                "%$request->valor%"
-            )->get();
-        } else {
-            $dado = Servico::All();
+        $tipo = $request->input('tipo');
+        $valor = $request->input('valor');
+
+        $query = Servico::query();
+
+        if (!empty($valor)) {
+            switch ($tipo) {
+                case 'cliente':
+                    $query->whereHas('cliente', function ($q) use ($valor) {
+                        $q->where('nome', 'like', "%{$valor}%");
+                    });
+                    break;
+
+                case 'telefone':
+                    $query->whereHas('cliente', function ($q) use ($valor) {
+                        $q->where('telefone', 'like', "%{$valor}%");
+                    });
+                    break;
+
+                case 'placa':
+                    $query->whereHas('carro', function ($q) use ($valor) {
+                        $q->where('placa', 'like', "%{$valor}%");
+                    });
+                    break;
+
+                case 'categoria':
+                    $query->whereHas('categoria', function ($q) use ($valor) {
+                        $q->where('nome', 'like', "%{$valor}%");
+                    });
+                    break;
+            }
         }
 
-        return view('servico.list', ['dado' => $dado]);
+        $dado = $query->with(['cliente', 'carro', 'categoria'])->get();
+
+        return view('servico.list', [
+        'dado' => $dado,
+        'tipo' => $tipo,
+        'valor' => $valor
+    ]);
     }
+
 }
