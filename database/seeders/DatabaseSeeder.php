@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ClienteSeeder::class,
             CarroSeeder::class,
             CategoriaServicoSeeder::class,
+            MecanicoSeeder::class,
             ServicoSeeder::class,
         ]);
         /*

@@ -123,16 +123,25 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="categoria" class="form-label fw-semibold">Categoria do serviço</label>
-                        <select name="categoria_id" class="form-select">
-                            <option value="">--Selecione--</option>
+                        <label class="form-label fw-semibold">Categoria do serviço</label>
+                        <div class="form-check">
                             @foreach ($categorias as $item)
-                                <option value="{{ $item->id }}"
-                                    {{ old('categoria_id', $dado->categoria_id ?? '') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->nome }}
-                                </option>
+                                <div class="form-check">
+                                    <input 
+                                        type="checkbox" 
+                                        name="categoria_id[]" 
+                                        value="{{ $item->id }}" 
+                                        class="form-check-input"
+                                        @if(isset($dado) && $dado->categorias->contains($item->id))
+                                            checked
+                                        @endif
+                                    >
+                                    <label class="form-check-label">
+                                        {{ $item->nome }}
+                                    </label>
+                                </div>
                             @endforeach
-                        </select>
+                        </div>
                     </div>
 
                     <div class="col-12 mb-3">

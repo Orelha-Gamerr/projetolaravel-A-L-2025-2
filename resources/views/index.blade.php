@@ -12,7 +12,7 @@
 
     <!-- Cards de Ações -->
     <div class="row g-4 mb-5">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100 text-center">
                 <div class="card-body">
                     <i class="fa-solid fa-screwdriver-wrench fa-3x text-primary mb-3"></i>
@@ -24,7 +24,19 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100 text-center">
+                <div class="card-body">
+                    <i class="fa-solid fa-people-group fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Mecânicos</h5>
+                    <p class="card-text text-muted">Cadastre e acompanhe seus mecanicos.</p>
+                    <a href="{{ url('mecanico')}}" class="btn btn-success">  <!-- route mecanico -->
+                        <i class="fa-solid fa-person-circle-plus"></i> Novo Mecanico
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100 text-center">
                 <div class="card-body">
                     <i class="fa-solid fa-user-gear fa-3x text-warning mb-3"></i>
@@ -36,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100 text-center">
                 <div class="card-body">
                     <i class="fa-solid fa-car-side fa-3x text-danger mb-3"></i>

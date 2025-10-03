@@ -12,6 +12,6 @@ class CategoriaServico extends Model
 
     public function servicos()
     {
-        return $this->hasMany(Servico::class, 'categoria_id');
+        return $this->belongsToMany(Servico::class, 'categoria_servico');
     }
 }

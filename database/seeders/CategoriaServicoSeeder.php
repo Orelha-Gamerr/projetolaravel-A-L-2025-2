@@ -13,6 +13,14 @@ class CategoriaServicoSeeder extends Seeder
      */
     public function run(): void
     {
-        CategoriaServico::factory()->count(7)->create();
+        CategoriaServico::insert([
+            ['nome' => 'MOTOR', 'nivel' => 1],
+            ['nome' => 'CÂMBIO', 'nivel' => 2],
+            ['nome' => 'ILUMINAÇÃO', 'nivel' => 3],
+            ['nome' => 'ESCAPAMENTO', 'nivel' => 4],
+            ['nome' => 'SUSPENSÃO', 'nivel' => 5],
+            ['nome' => 'FREIOS', 'nivel' => 6],
+            ['nome' => 'DIREÇÃO', 'nivel' => 7],
+        ]);
     }
 }

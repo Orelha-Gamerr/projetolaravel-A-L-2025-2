@@ -28,6 +28,7 @@ class ServicoController extends Controller
         $categorias = CategoriaServico::orderBy('nome')->get();
         $carro = Carro::orderBy('nome')->get();
         $clientes = Cliente::all(); // pega todos os clientes
+        
 
 
         return view('servico.form', [
@@ -46,24 +47,27 @@ class ServicoController extends Controller
         $request->validate([
             'cliente_id' => 'required',
             'carro_id' => 'required',
-            'categoria_id' => 'required',
+            'categoria_id' => 'required|array|min:1', // agora é array
         ], [
             'cliente_id.required' => 'O cliente é obrigatório',
             'carro_id.required' => 'O carro é obrigatório',
             'categoria_id.required' => 'A categoria é obrigatória',
         ]);
     }
+
     public function store(Request $request)
     {
-        //dd(vars: $request->all());
-
         $this->validateRequest($request);
-        $data = $request->all();
 
-        Servico::create($data);
+        $data = $request->except('categoria_id'); // remove categorias do create
+        $servico = Servico::create($data);
+
+        // associa as categorias
+        $servico->categorias()->sync($request->categoria_id);
 
         return redirect()->route('servico.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -96,15 +100,17 @@ class ServicoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //dd($request->all(), $id);
-
         $this->validateRequest($request);
-        $data = $request->all();
 
-        Servico::updateOrCreate(['id' => $id], $data);
+        $data = $request->except('categoria_id');
+        $servico = Servico::findOrFail($id);
+        $servico->update($data);
+
+        $servico->categorias()->sync($request->categoria_id);
 
         return redirect()->route('servico.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -146,14 +152,14 @@ class ServicoController extends Controller
                     break;
 
                 case 'categoria':
-                    $query->whereHas('categoria', function ($q) use ($valor) {
+                    $query->whereHas('categorias', function ($q) use ($valor) {
                         $q->where('nome', 'like', "%{$valor}%");
                     });
                     break;
             }
         }
 
-        $dado = $query->with(['cliente', 'carro', 'categoria'])->get();
+        $dado = $query->with(['cliente', 'carro', 'categorias'])->get();
 
         return view('servico.list', [
         'dado' => $dado,

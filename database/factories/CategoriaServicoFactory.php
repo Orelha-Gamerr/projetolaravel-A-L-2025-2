@@ -16,17 +16,19 @@ class CategoriaServicoFactory extends Factory
      */
     public function definition(): array
     {
+        $categorias = [
+            'MOTOR',
+            'CÂMBIO',
+            'ILUMINAÇÃO',
+            'ESCAPAMENTO',
+            'SUSPENSÃO',
+            'FREIOS',
+            'DIREÇÃO',
+        ];
+
         return [
-            'nome' => $this->faker->unique()->randomElement([
-                'MOTOR',
-                'CÂMBIO',
-                'ILUMINAÇÃO',
-                'ESCAPAMENTO',
-                'SUSPENSÃO',
-                'FREIOS',
-                'DIREÇÃO',
-            ]),
-            'nivel' => $this->faker->numberBetween(1, 7)
+            'nome' => $this->faker->randomElement($categorias),
+            'nivel' => $this->faker->numberBetween(1, 7),
         ];
     }
 }
