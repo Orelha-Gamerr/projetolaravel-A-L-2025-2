@@ -16,4 +16,9 @@ class CategoriaServico extends Model
     {
         return $this->belongsToMany(Servico::class, 'categoria_servico', 'categoria_id', 'servico_id');
     }
+        public function mecanicos()
+    {
+        return $this->belongsToMany(Mecanico::class, 'categoria_mecanico');
+    }
+
 }

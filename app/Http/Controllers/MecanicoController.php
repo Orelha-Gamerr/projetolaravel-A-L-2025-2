@@ -50,13 +50,15 @@ class MecanicoController extends Controller
 
     public function store(Request $request)
     {
-        $this->validateRequest($request);
-        $data = $request->all();
+        $mecanico = Mecanico::create($request->except('categoria_id'));
 
-        Mecanico::create($data);
+        if ($request->has('categoria_id')) {
+            $mecanico->categorias()->sync($request->categoria_id);
+        }
 
-        return redirect()->route('mecanico.index');
+        return redirect()->route('mecanico.index')->with('success', 'Mecânico cadastrado com sucesso!');
     }
+
 
     /**
      * Display the specified resource.

@@ -13,6 +13,19 @@ class CategoriaServicoSeeder extends Seeder
      */
     public function run(): void
     {
-        CategoriaServico::factory()->count(7)->create();
+        $categorias = [
+            'MOTOR',
+            'CÂMBIO',
+            'ILUMINAÇÃO',
+            'ESCAPAMENTO',
+            'SUSPENSÃO',
+            'FREIOS',
+            'DIREÇÃO',
+        ];
+
+        foreach ($categorias as $nome) {
+            CategoriaServico::create(['nome' => $nome]);
+        }
+
     }
 }
