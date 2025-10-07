@@ -26,7 +26,7 @@
                             <option value="nome">Nome</option>
                             <option value="cpf">CPF</option>
                             <option value="telefone">Telefone</option>
-                            <option value="email">Email</option>
+                            <option value="categoria">Categoria</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -59,8 +59,7 @@
                             <th>Nome</th>
                             <th>CPF</th>
                             <th>Telefone</th>
-                            <th>Email</th>
-                            <th>Endereço</th>
+                            <th>Categoria</th>
                             <th class="text-center">Editar</th>
                             <th class="text-center">Excluir</th>
                         </tr>
@@ -72,8 +71,7 @@
                                 <td class="fw-semibold">{{$item->nome}}</td>
                                 <td>{{$item->cpf}}</td>
                                 <td>{{$item->telefone}}</td>
-                                <td>{{$item->email}}</td>
-                                <td>{{$item->endereco}}</td>
+                                <td><span class="badge bg-info text-dark">{{ $item->categoria->nome ?? '-' }}</span></td>
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-primary" href="{{ route('mecanico.edit', $item->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i>
