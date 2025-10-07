@@ -24,13 +24,9 @@ class Servico extends Model
         'data_servico' => 'date',
     ];
 
-    public function categoria()
-    {
-        return $this->belongsTo(CategoriaServico::class, 'categoria_id');
-    }
     public function categorias()
     {
-        return $this->belongsToMany(CategoriaServico::class, 'categoria_servico');
+        return $this->belongsToMany(CategoriaServico::class, 'categoria_servico', 'servico_id', 'categoria_id');
     }
 
     public function cliente()
