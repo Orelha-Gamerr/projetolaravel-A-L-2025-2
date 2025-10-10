@@ -14,7 +14,6 @@ class Servico extends Model
     protected $fillable = [
         'cliente_id',
         'carro_id',
-        'categoria_id',
         'descricao',
         'data_servico',
         'valor',
@@ -26,8 +25,14 @@ class Servico extends Model
 
     public function categorias()
     {
-        return $this->belongsToMany(CategoriaServico::class, 'categoria_servico', 'servico_id', 'categoria_id');
+        return $this->belongsToMany(
+            CategoriaServico::class,
+            'categoria_servico',
+            'servico_id',
+            'categoria_id'
+        );
     }
+
 
     public function cliente()
     {

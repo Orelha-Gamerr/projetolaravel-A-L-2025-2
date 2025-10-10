@@ -55,11 +55,15 @@
                         @foreach ($categorias as $item)
                             <div class="form-check">
                                 <input 
-                                type="checkbox" 
+                                    type="checkbox" 
                                     name="categoria_id[]" 
                                     value="{{ $item->id }}" 
                                     class="form-check-input"
-                                    {{ in_array($item->id, old('categoria_id', isset($dado) ? (array) $dado->categoria_id : [])) ? 'checked' : '' }}
+                                    @if( old('categoria_id') )
+                                        {{ in_array($item->id, old('categoria_id')) ? 'checked' : '' }}
+                                    @elseif( !empty($dado) )
+                                        {{ $dado->categorias->contains($item->id) ? 'checked' : '' }}
+                                    @endif
                                 >
                                 <label class="form-check-label">
                                     {{ $item->nome }}

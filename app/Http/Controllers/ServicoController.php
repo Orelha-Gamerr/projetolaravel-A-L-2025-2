@@ -15,7 +15,7 @@ class ServicoController extends Controller
      */
     public function index()
     {
-        $dado = Servico::All();
+        $dado = Servico::with(['cliente', 'carro', 'categorias'])->get();
 
         return view('servico.list', ['dado' => $dado]);
     }
@@ -47,7 +47,8 @@ class ServicoController extends Controller
         $request->validate([
             'cliente_id' => 'required',
             'carro_id' => 'required',
-            'categoria_id' => 'required|array|min:1', // agora é array
+            'categoria_id' => 'required|array',
+            'categoria_id.*' => 'exists:categoria_servicos,id',
         ], [
             'cliente_id.required' => 'O cliente é obrigatório',
             'carro_id.required' => 'O carro é obrigatório',
@@ -59,14 +60,20 @@ class ServicoController extends Controller
     {
         $this->validateRequest($request);
 
-        $data = $request->except('categoria_id'); // remove categorias do create
-        $servico = Servico::create($data);
+        $servico = Servico::create($request->only([
+            'cliente_id',
+            'carro_id',
+            'descricao',
+            'data_servico',
+            'valor'
+        ]));
 
-        // associa as categorias
+        // associa múltiplas categorias
         $servico->categorias()->sync($request->categoria_id);
 
         return redirect()->route('servico.index');
     }
+
 
 
     /**
@@ -110,6 +117,7 @@ class ServicoController extends Controller
 
         return redirect()->route('servico.index');
     }
+
 
 
     /**
@@ -159,7 +167,7 @@ class ServicoController extends Controller
             }
         }
 
-        $dado = $query->with(['cliente', 'carro', 'categorias'])->get();
+        $dado = Servico::with(['cliente', 'carro', 'categorias'])->get();
 
         return view('servico.list', [
         'dado' => $dado,

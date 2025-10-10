@@ -13,21 +13,16 @@ class MecanicoController extends Controller
      */
     public function index()
     {
-        $dado = Mecanico::all();
+        $dado = Mecanico::with('categorias')->get();
 
         return view('mecanico.list', ['dado' => $dado]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        $categorias = CategoriaServico::all();
-
-        return view('mecanico.form', [
-            'categorias' => $categorias
-        ]);
+        $categorias = CategoriaServico::orderBy('nome')->get();
+        return view('mecanico.form', ['categorias' => $categorias]);
     }
 
     /**
@@ -39,7 +34,8 @@ class MecanicoController extends Controller
             'nome' => 'required',
             'cpf' => 'required',
             'telefone' => 'required',
-            'categoria_id' => 'required',
+            'categoria_id' => 'required|array',
+            'categoria_id.*' => 'exists:categoria_servicos,id',
         ], [
             'nome.required' => 'O nome é obrigatório',
             'cpf.required' => 'O CPF é obrigatório',
@@ -50,7 +46,9 @@ class MecanicoController extends Controller
 
     public function store(Request $request)
     {
-        $mecanico = Mecanico::create($request->except('categoria_id'));
+        $this->validateRequest($request);
+
+        $mecanico = Mecanico::create($request->only(['nome', 'cpf', 'telefone']));
 
         if ($request->has('categoria_id')) {
             $mecanico->categorias()->sync($request->categoria_id);
@@ -68,13 +66,10 @@ class MecanicoController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        $dado = Mecanico::findOrFail($id);
-        $categorias = CategoriaServico::all();
+        $dado = Mecanico::with('categorias')->findOrFail($id);
+        $categorias = CategoriaServico::orderBy('nome')->get();
 
         return view('mecanico.form', [
             'dado' => $dado,
@@ -88,11 +83,15 @@ class MecanicoController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validateRequest($request);
-        $data = $request->all();
 
-        Mecanico::updateOrCreate(['id' => $id], $data);
+        $mecanico = Mecanico::findOrFail($id);
+        $mecanico->update($request->only(['nome', 'cpf', 'telefone']));
 
-        return redirect('mecanico');
+        if ($request->has('categoria_id')) {
+            $mecanico->categorias()->sync($request->categoria_id);
+        }
+
+        return redirect()->route('mecanico.index')->with('success', 'Mecânico atualizado com sucesso!');
     }
 
     /**
@@ -100,27 +99,39 @@ class MecanicoController extends Controller
      */
     public function destroy(string $id)
     {
-        $dado = Mecanico::findOrFail($id);
-        $dado->delete();
+        $mecanico = Mecanico::findOrFail($id);
+        $mecanico->categorias()->detach(); // remove vínculo com categorias
+        $mecanico->delete();
 
-        return redirect('mecanico');
+        return redirect()->route('mecanico.index')->with('success', 'Mecânico removido com sucesso!');
     }
 
-    /**
-     * Search mecanic.
-     */
     public function search(Request $request)
     {
+        $query = Mecanico::query();
+
         if (!empty($request->valor)) {
-            $dado = Mecanico::where(
-                $request->tipo,
-                'like',
-                "%$request->valor%"
-            )->get();
-        } else {
-            $dado = Mecanico::all();
+            switch ($request->tipo) {
+                case 'nome':
+                case 'cpf':
+                case 'telefone':
+                    $query->where($request->tipo, 'like', "%{$request->valor}%");
+                    break;
+
+                case 'categoria':
+                    $query->whereHas('categorias', function ($q) use ($request) {
+                        $q->where('nome', 'like', "%{$request->valor}%");
+                    });
+                    break;
+            }
         }
 
-        return view('mecanico.list', ['dado' => $dado]);
+        $dado = $query->with('categorias')->get();
+
+        return view('mecanico.list', [
+            'dado' => $dado,
+            'tipo' => $request->tipo,
+            'valor' => $request->valor
+        ]);
     }
 }

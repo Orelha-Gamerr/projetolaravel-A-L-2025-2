@@ -2,17 +2,23 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Mecanico;
+use App\Models\CategoriaServico;
 
 class MecanicoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        Mecanico::factory()->count(3)->create();
+        $categorias = CategoriaServico::all()->pluck('id')->toArray();
+
+        Mecanico::factory()
+            ->count(3)
+            ->create()
+            ->each(function ($mecanico) use ($categorias) {
+                $mecanico->categorias()->sync(
+                    collect($categorias)->random(rand(1, 3))->toArray()
+                );
+            });
     }
 }

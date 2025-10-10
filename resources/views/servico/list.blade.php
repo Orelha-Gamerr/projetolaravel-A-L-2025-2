@@ -72,7 +72,13 @@
                         <td>{{ $item->cliente->telefone ?? '-' }}</td>
                         <td>{{ $item->data_servico ? $item->data_servico->format('d/m/Y') : '-' }}</td>
                         <td>{{ $item->carro->placa ?? '-' }}</td>
-                        <td><span class="badge bg-info text-dark">{{ $item->categoria->nome ?? '-' }}</span></td>
+                        <td><span class="badge bg-info text-dark">
+                            @forelse($item->categorias as $categoria)
+                                {{ $categoria->nome }}@if(!$loop->last), @endif
+                            @empty
+                                -
+                            @endforelse
+                        </span></td>
                         
                         <!-- Botão de descrição -->
                         <td>

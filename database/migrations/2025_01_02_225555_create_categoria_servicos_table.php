@@ -10,8 +10,15 @@ return new class extends Migration
     {
         Schema::create('categoria_servico', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categoria_id')->constrained('categoria_servicos')->onDelete('cascade');
-            $table->foreignId('servico_id')->constrained()->onDelete('cascade');
+
+            $table->foreignId('categoria_id')
+                  ->constrained('categoria_servicos') // tabela certa de categorias
+                  ->onDelete('cascade');
+
+            $table->foreignId('servico_id')
+                  ->constrained('servicos') // tabela certa de serviços
+                  ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -21,3 +28,4 @@ return new class extends Migration
         Schema::dropIfExists('categoria_servico');
     }
 };
+

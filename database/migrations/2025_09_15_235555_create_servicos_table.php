@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cliente_id')->constrained('clientes');
             $table->foreignId('carro_id')->constrained()->onDelete('cascade');
-            $table->foreignId('categoria_id')->constrained('categoria_servicos');
+            $table->foreignId('categoria_id')->constrained('categoria_servicos')->onDelete('cascade');
             $table->text('descricao')->nullable();
             $table->date('data_servico')->nullable();
             $table->decimal('valor', 8, 2)->nullable();

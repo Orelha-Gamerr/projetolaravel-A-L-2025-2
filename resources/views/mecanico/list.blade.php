@@ -71,7 +71,16 @@
                                 <td class="fw-semibold">{{$item->nome}}</td>
                                 <td>{{$item->cpf}}</td>
                                 <td>{{$item->telefone}}</td>
-                                <td><span class="badge bg-info text-dark">{{ $item->categoria->nome ?? '-' }}</span></td>
+                                <td>
+                                    <span class="badge bg-info text-dark">
+                                        @forelse($item->categorias as $categoria)
+                                            {{ $categoria->nome }}@if(!$loop->last), @endif
+                                        @empty
+                                            -
+                                        @endforelse
+                                    </span>
+                                </td>
+
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-primary" href="{{ route('mecanico.edit', $item->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i>
