@@ -50,13 +50,25 @@
                 </div>
 
                 <div class="row mb-4">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="ano" class="form-label fw-semibold">Ano:</label>
                         <input type="text" id="ano" name="ano" class="form-control" value="{{ old('ano', $dado->ano ?? '')  }}" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="renavam" class="form-label fw-semibold">Renavam:</label>
                         <input type="text" id="renavam" name="renavam" class="form-control" value="{{ old('renavam', $dado->renavam ?? '')  }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="cliente_id" class="form-label fw-semibold">Cliente:</label>
+                        <select id="cliente_id" name="cliente_id" class="form-select" required>
+                            <option value="">Selecione um cliente</option>
+                            @foreach($clientes as $cliente)
+                                <option value="{{ $cliente->id }}"
+                                    {{ old('cliente_id', $dado->cliente_id ?? '') == $cliente->id ? 'selected' : '' }}>
+                                    {{ $cliente->nome }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 

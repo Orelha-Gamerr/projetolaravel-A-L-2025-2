@@ -17,4 +17,9 @@ class Cliente extends Model
         'email',
         'endereco'
     ];
+
+    public function carros()
+    {
+        return $this->hasMany(Carro::class, 'cliente_id');
+    }
 }

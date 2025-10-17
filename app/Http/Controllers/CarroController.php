@@ -3,117 +3,79 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carro;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class CarroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $dado = Carro::all();
-
-        return view('carro.list', ['dado' => $dado]);
+        $dado = Carro::with('cliente')->get(); // já traz o nome do cliente
+        return view('carro.list', compact('dado'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('carro.form');
+        $clientes = Cliente::all(); 
+        return view('carro.form', compact('clientes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     private function validateRequest(Request $request)
     {
         $request->validate([
             'placa' => 'required',
             'marca' => 'required',
             'modelo' => 'required',
-            'ano' => 'required',
+            'ano' => 'required|numeric',
             'renavam' => 'required',
+            'cliente_id' => 'required|exists:clientes,id',
         ], [
-            'placa.required' => 'A placa é obrigatória',
-            'marca.required' => 'A marca é obrigatória',
-            'modelo.required' => 'O modelo é obrigatório',
-            'ano.required' => 'O ano é obrigatório',
-            'renavam.required' => 'O renavam é obrigatório',
+            'cliente_id.exists' => 'O cliente selecionado não existe.',
         ]);
     }
 
     public function store(Request $request)
     {
         $this->validateRequest($request);
-        $data = $request->all();
 
-        Carro::create($data);
+        Carro::create($request->all());
 
-        return redirect()->route('carro.index');
+        return redirect()->route('carro.index')->with('success', 'Carro cadastrado com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $dado = Carro::findOrFail($id);
-
-        return view('carro.form', [
-            'dado' => $dado
-        ]);
+        $clientes = Cliente::all();
+        return view('carro.form', compact('dado', 'clientes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $this->validateRequest($request);
-        $data = $request->all();
 
-        Carro::updateOrCreate(['id' => $id], $data);
+        $carro = Carro::findOrFail($id);
+        $carro->update($request->all());
 
-        return redirect('carro');
+        return redirect()->route('carro.index')->with('success', 'Carro atualizado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $dado = Carro::findOrFail($id);
         $dado->delete();
 
-        return redirect('carro');
+        return redirect()->route('carro.index')->with('success', 'Carro excluído com sucesso!');
     }
 
-    /**
-     * Search clients.
-     */
     public function search(Request $request)
     {
         if (!empty($request->valor)) {
-            $dado = Carro::where(
-                $request->tipo,
-                'like',
-                "%$request->valor%"
-            )->get();
+            $dado = Carro::where($request->tipo, 'like', "%$request->valor%")->get();
         } else {
             $dado = Carro::all();
         }
 
-        return view('carro.list', ['dado' => $dado]);
+        return view('carro.list', compact('dado'));
     }
 }

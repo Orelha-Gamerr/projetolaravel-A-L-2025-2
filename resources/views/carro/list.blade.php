@@ -60,6 +60,7 @@
                             <th>Modelo</th>
                             <th>Ano</th>
                             <th>Renavam</th>
+                            <th>Cliente</th>
                             <th class="text-center">Editar</th>
                             <th class="text-center">Excluir</th>
                         </tr>
@@ -73,6 +74,18 @@
                                 <td>{{$item->modelo}}</td>
                                 <td>{{$item->ano}}</td>
                                 <td>{{$item->renavam}}</td>
+                                <td>
+                                    @if($item->cliente)
+                                        <a href="{{ route('cliente.index') }}?id={{ $item->cliente->id }}" class="text-decoration-none fw-semibold">
+                                            {{ $item->cliente->nome }}
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+
+
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-primary" href="{{ route('carro.edit', $item->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i>

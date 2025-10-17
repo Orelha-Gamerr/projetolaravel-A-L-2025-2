@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('modelo');
             $table->integer('ano');
             $table->string('renavam');
+            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -25,6 +25,7 @@ class CarroFactory extends Factory
             'modelo' => $this->faker->word,
             'ano' => $this->faker->numberBetween(1950, 2025),
             'renavam' => $this->faker->unique()->numerify('###########'),
+            'cliente_id' => \App\Models\Cliente::factory(),
         ];
     }
 }

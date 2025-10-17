@@ -61,26 +61,42 @@
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Endereço</th>
+                            <th>Carros</th>
                             <th class="text-center">Editar</th>
                             <th class="text-center">Excluir</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($dado as $item)
-                            <tr>
+                            <!-- Linha principal clicável -->
+                            <tr class="accordion-toggle cursor-pointer {{ $highlightId == $item->id ? 'table-warning' : '' }}"
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#carros-{{$item->id}}" 
+                                aria-expanded="false" 
+                                aria-controls="carros-{{$item->id}}"
+                                style="cursor: pointer;">
                                 <td><span class="badge bg-secondary">{{$item->id}}</span></td>
                                 <td class="fw-semibold">{{$item->nome}}</td>
                                 <td>{{$item->cpf}}</td>
                                 <td>{{$item->telefone}}</td>
                                 <td>{{$item->email}}</td>
                                 <td>{{$item->endereco}}</td>
+                                <td>
+                                    @if($item->carros->count() > 0)
+                                        <span class="badge bg-info">
+                                            {{ $item->carros->count() }} carro(s)
+                                        </span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-primary" href="{{ route('cliente.edit', $item->id) }}">
+                                    <a class="btn btn-sm btn-primary" href="{{ route('cliente.edit', $item->id) }}" onclick="event.stopPropagation()">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                 </td>
                                 <td class="text-center">
-                                    <form action="{{ route('cliente.destroy',$item->id) }}" method="post">
+                                    <form action="{{ route('cliente.destroy',$item->id) }}" method="post" onclick="event.stopPropagation()">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deseja remover o registro?')">
@@ -89,6 +105,55 @@
                                     </form>
                                 </td>
                             </tr>
+                            
+                            <!-- Linha do accordion para os carros -->
+                            @if($item->carros->count() > 0)
+                                <tr class="accordion-row">
+                                    <td colspan="9" class="p-0 border-0">
+                                        <div class="collapse" id="carros-{{$item->id}}">
+                                            <div class="card card-body border-0 bg-light m-2">
+                                                <h6 class="fw-bold mb-3">
+                                                    <i class="fa-solid fa-car me-2"></i>
+                                                    Carros do Cliente: {{ $item->nome }}
+                                                    <span class="badge bg-primary ms-2">{{ $item->carros->count() }}</span>
+                                                </h6>
+                                                <div class="row">
+                                                    @foreach($item->carros as $carro)
+                                                        <div class="col-md-6 col-lg-4 mb-3">
+                                                            <div class="card h-100">
+                                                                <div class="card-header py-2 bg-dark text-white">
+                                                                    <small class="fw-bold">
+                                                                        <i class="fa-solid fa-car-side me-1"></i>
+                                                                        {{ $carro->marca }} {{ $carro->modelo }}
+                                                                    </small>
+                                                                </div>
+                                                                <div class="card-body py-2">
+                                                                    <small class="text-muted d-block">
+                                                                        <i class="fa-solid fa-id-card me-1"></i>
+                                                                        <strong>Placa:</strong> {{ $carro->placa }}
+                                                                    </small>
+                                                                    @if(isset($carro->cor))
+                                                                        <small class="text-muted d-block">
+                                                                            <i class="fa-solid fa-palette me-1"></i>
+                                                                            <strong>Cor:</strong> {{ $carro->cor }}
+                                                                        </small>
+                                                                    @endif
+                                                                    @if(isset($carro->ano))
+                                                                        <small class="text-muted d-block">
+                                                                            <i class="fa-solid fa-calendar me-1"></i>
+                                                                            <strong>Ano:</strong> {{ $carro->ano }}
+                                                                        </small>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -97,5 +162,14 @@
     </div>
 
 </div>
+
+<style>
+.accordion-toggle:hover {
+    background-color: #f8f9fa !important;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+</style>
 
 @stop

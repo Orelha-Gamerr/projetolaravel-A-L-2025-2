@@ -10,16 +10,18 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dado = Cliente::all();
+        $dado = Cliente::with('carros')->get();
 
-        return view('cliente.list', ['dado' => $dado]);
+        $highlightId = $request->query('id');
+
+        return view('cliente.list', [
+            'dado' => $dado,
+            'highlightId' => $highlightId,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('cliente.form');
@@ -55,17 +57,6 @@ class ClienteController extends Controller
         return redirect()->route('cliente.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $dado = Cliente::findOrFail($id);
@@ -75,9 +66,6 @@ class ClienteController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $this->validateRequest($request);
@@ -88,9 +76,6 @@ class ClienteController extends Controller
         return redirect('cliente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $dado = Cliente::findOrFail($id);
@@ -99,9 +84,6 @@ class ClienteController extends Controller
         return redirect('cliente');
     }
 
-    /**
-     * Search clients.
-     */
     public function search(Request $request)
     {
         if (!empty($request->valor)) {

@@ -16,6 +16,12 @@ class Carro extends Model
         'marca',
         'modelo',
         'ano',
-        'renavam'
+        'renavam',
+        'cliente_id'
     ];
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
 }
