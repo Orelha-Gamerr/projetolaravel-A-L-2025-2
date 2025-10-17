@@ -7,6 +7,10 @@
     <!-- Cabeçalho -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-dark"><i class="fa-solid fa-list-check"></i> Listagem de Serviços</h2>
+        <a href="{{ route('relatorio.servicos')}}" class="btn btn-outline-success">
+            <i class="fa-solid fa-chart-line me-1"></i> Relatórios
+        </a>
+
         <a href="{{ url('')}}" class="btn btn-outline-primary">
             <i class="fa-solid fa-house"></i> Tela Inicial
         </a>
