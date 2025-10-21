@@ -7,6 +7,8 @@ use App\Models\CategoriaServico;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Carro;
+use App\Charts\ServicoChart;
+
 
 class ServicoController extends Controller
 {
@@ -176,4 +178,9 @@ class ServicoController extends Controller
     ]);
     }
 
+    public function chart(ServicoChart $chart, Request $request)
+    {
+        $ano = $request->input('ano', date('Y')); // padrão: ano atual
+        return view('servico.chart', ['chart' => $chart->build($ano), 'anoSelecionado' => $ano]);
+    }
 }

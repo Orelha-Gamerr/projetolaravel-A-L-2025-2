@@ -17,7 +17,7 @@ class ServicoFactory extends Factory
             'carro_id' => Carro::inRandomOrder()->first()->id ?? Carro::factory(),
             'categoria_id' => CategoriaServico::inRandomOrder()->first()->id ?? CategoriaServico::factory(),
             'descricao' => $this->faker->text(200),
-            'data_servico' => $this->faker->date(),
+            'data_servico' => $this->faker->dateTimeBetween('2021-01-01', '2025-12-31')->format('Y-m-d'),
             'valor' => $this->faker->randomFloat(2, 50, 1000),
         ];
     }
