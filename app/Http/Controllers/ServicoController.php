@@ -70,7 +70,6 @@ class ServicoController extends Controller
             'valor'
         ]));
 
-        // associa múltiplas categorias
         $servico->categorias()->sync($request->categoria_id);
 
         return redirect()->route('servico.index');
