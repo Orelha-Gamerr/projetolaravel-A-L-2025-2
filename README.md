@@ -1,61 +1,119 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Projeto Laravel: Gerenciamento de Serviços Automotivos
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descrição
 
-## About Laravel
+Este projeto é uma aplicação web desenvolvida em **Laravel** para gerenciamento de clientes, veículos, mecânicos e serviços automotivos. Possui cadastro de clientes, carros, categorias de serviços, mecânicos e serviços realizados, com relacionamento **many-to-many** entre serviços e categorias.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tecnologias
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* PHP 8.x
+* Laravel 10.x
+* SQLite (banco de dados de desenvolvimento)
+* Blade Templates
+* Bootstrap 5
+* Font Awesome
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Funcionalidades
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* Cadastro e listagem de **Clientes**.
+* Cadastro e listagem de **Carros**, vinculados a clientes.
+* Cadastro de **Categorias de Serviços**.
+* Cadastro e listagem de **Mecânicos**.
+* Cadastro de **Serviços**, associando múltiplas categorias a cada serviço.
+* Pesquisa de serviços por cliente, telefone, placa do carro ou categoria.
+* Relatórios simples e gráficos (via `ServicoChart`).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Estrutura do Banco de Dados
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* **clientes**: armazena dados do cliente (nome, CPF, telefone).
+* **carros**: armazena dados do veículo (placa, marca, modelo) e referência ao cliente.
+* **categoria_servicos**: categorias de serviços oferecidos.
+* **mecanicos**: dados de mecânicos.
+* **servicos**: registro de serviços realizados, com relacionamento many-to-many com categorias via **categoria_servico** (tabela pivô).
 
-### Premium Partners
+**Relacionamento Many-to-Many:**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```
+servicos <-- categoria_servico --> categoria_servicos
+```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Instalação
 
-## Code of Conduct
+1. Clone o repositório:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd projetolaravel-A-L-2025-2
+```
 
-## Security Vulnerabilities
+2. Instale as dependências via Composer:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+composer install
+```
 
-## License
+3. Copie o arquivo de ambiente e gere a chave:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. Configure o banco de dados SQLite:
+
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/para/database.sqlite
+```
+
+> Obs: Crie o arquivo SQLite se ainda não existir:
+
+```bash
+touch database/database.sqlite
+```
+
+5. Rode migrations e seeders:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+6. Inicie o servidor local:
+
+```bash
+php artisan serve
+```
+
+Acesse em `http://127.0.0.1:8000`.
+
+---
+
+## Uso
+
+* Acesse `/servico` para listar os serviços.
+* Acesse `/servico/create` para cadastrar um novo serviço.
+* Ao criar um serviço, selecione **cliente**, **carro** e **categorias** (múltiplas categorias podem ser selecionadas).
+* Use o formulário de pesquisa para filtrar serviços por cliente, telefone, placa ou categoria.
+
+---
+
+## Observações
+
+* O relacionamento entre **serviços** e **categorias** é feito via tabela pivô `categoria_servico`.
+* As factories e seeders já estão preparadas para popular o banco com dados de teste.
+* Não há coluna `categoria_id` na tabela `servicos`; todas as categorias são vinculadas via pivot table.
+
+---
+
+## Autor
+
+**Angelo Antonio Lucietto e Lucas Ferron da Silva**
+Projeto desenvolvido como atividade acadêmica/educacional.
