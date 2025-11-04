@@ -65,6 +65,7 @@
                     <th>Categoria</th>
                     <th>Descrição</th>
                     <th>Preço</th>
+                    <th>Relatório</th> <!-- Adicionando coluna para Relatório -->
                     <th colspan="2" class="text-center">Ações</th>
                 </tr>
             </thead>
@@ -83,7 +84,7 @@
                                 -
                             @endforelse
                         </span></td>
-                        
+
                         <!-- Botão de descrição -->
                         <td>
                             <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#descricaoModal{{ $item->id }}">
@@ -111,6 +112,13 @@
                         </td>
 
                         <td>R$ {{ number_format((float) ($item->valor ?? 0), 2, ',', '.') }}</td>
+
+                        <!-- Botão de gerar PDF -->
+                        <td class="text-center">
+                            <a href="{{ route('servico.report', $item->id) }}" class="btn btn-sm btn-danger">
+                                <i class="fa-solid fa-file-pdf"></i> PDF
+                            </a>
+                        </td>
 
                         <!-- Editar -->
                         <td class="text-center">

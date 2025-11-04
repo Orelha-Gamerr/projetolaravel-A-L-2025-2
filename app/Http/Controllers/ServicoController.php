@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Carro;
 use App\Charts\ServicoChart;
-
+use PDF;
 
 class ServicoController extends Controller
 {
@@ -30,8 +30,6 @@ class ServicoController extends Controller
         $categorias = CategoriaServico::orderBy('nome')->get();
         $carro = Carro::orderBy('nome')->get();
         $clientes = Cliente::all(); // pega todos os clientes
-        
-
 
         return view('servico.form', [
             'categorias' => $categorias,
@@ -43,7 +41,6 @@ class ServicoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     private function validateRequest(Request $request)
     {
         $request->validate([
@@ -74,8 +71,6 @@ class ServicoController extends Controller
 
         return redirect()->route('servico.index');
     }
-
-
 
     /**
      * Display the specified resource.
@@ -119,15 +114,12 @@ class ServicoController extends Controller
         return redirect()->route('servico.index');
     }
 
-
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         $dado = Servico::findOrFail($id);
-
         $dado->delete();
 
         return redirect()->route('servico.index');
@@ -171,15 +163,33 @@ class ServicoController extends Controller
         $dado = Servico::with(['cliente', 'carro', 'categorias'])->get();
 
         return view('servico.list', [
-        'dado' => $dado,
-        'tipo' => $tipo,
-        'valor' => $valor
-    ]);
+            'dado' => $dado,
+            'tipo' => $tipo,
+            'valor' => $valor
+        ]);
     }
 
     public function chart(ServicoChart $chart, Request $request)
     {
-        $ano = $request->input('ano', date('Y')); // padrão: ano atual
+        $ano = $request->input('ano', date('Y'));
         return view('servico.chart', ['chart' => $chart->build($ano), 'anoSelecionado' => $ano]);
+    }
+
+    /**
+     * Ordem de Serviço
+     */
+    public function report($id)
+    {
+        $servico = Servico::with(['cliente', 'carro', 'categorias'])->findOrFail($id);
+
+    //    dd($servico);
+        $data = [
+            'titulo' => 'Ordem de Serviço - #' . $servico->id,
+            'servico' => $servico
+        ];
+
+        $pdf = PDF::loadView('servico.report', $data);
+
+        return $pdf->download('OS_' . $servico->id . '.pdf');
     }
 }
