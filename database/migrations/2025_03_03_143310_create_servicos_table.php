@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('servicos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cliente_id')->constrained('clientes');
-            $table->foreignId('carro_id')->constrained()->onDelete('cascade');
+            $table->foreignId('carro_id')->constrained('carros')->onDelete('cascade');
             $table->text('descricao')->nullable();
             $table->date('data_servico')->nullable();
             $table->decimal('valor', 8, 2)->nullable();
