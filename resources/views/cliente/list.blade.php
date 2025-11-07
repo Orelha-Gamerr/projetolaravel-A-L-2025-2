@@ -61,6 +61,7 @@
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Endereço</th>
+                            <th>Foto</th>
                             <th>Carros</th>
                             <th class="text-center">Editar</th>
                             <th class="text-center">Excluir</th>
@@ -81,6 +82,13 @@
                                 <td>{{$item->telefone}}</td>
                                 <td>{{$item->email}}</td>
                                 <td>{{$item->endereco}}</td>
+                                <td>
+                                    @if(!empty($item->foto))
+                                        <img src="{{ asset('storage/cliente/' . $item->foto) }}" width="60" class="rounded shadow-sm">
+                                    @else
+                                        <span class="text-muted">Sem foto</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($item->carros->count() > 0)
                                         <span class="badge bg-info">
@@ -142,6 +150,12 @@
                                                                         <small class="text-muted d-block">
                                                                             <i class="fa-solid fa-calendar me-1"></i>
                                                                             <strong>Ano:</strong> {{ $carro->ano }}
+                                                                        </small>
+                                                                    @endif
+                                                                    @if(isset($carro->foto))
+                                                                        <small class="text-muted d-block">
+                                                                            <i class="fa-solid fa-calendar me-1"></i> 
+                                                                            <strong>Foto:</strong> <br> <img src="{{ asset('storage/carros/' . $carro->foto) }}" width="100%" class="rounded shadow-sm">
                                                                         </small>
                                                                     @endif
                                                                 </div>

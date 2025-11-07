@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('telefone');
             $table->string('email');
             $table->string('endereco');
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

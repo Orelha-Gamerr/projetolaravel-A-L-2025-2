@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -50,9 +52,16 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $this->validateRequest($request);
-        $data = $request->all();
 
-        Cliente::create($data);
+        $cliente = Cliente::create($request->except('foto'));
+
+        if ($request->hasFile('foto')) {
+            $arquivo = $request->file('foto');
+            $nomeArquivo = uniqid().'.'.$arquivo->extension();
+            $arquivo->move(storage_path('app/public/cliente'), $nomeArquivo);
+            $cliente->foto = $nomeArquivo;
+            $cliente->save();
+        }
 
         return redirect()->route('cliente.index');
     }
@@ -69,19 +78,56 @@ class ClienteController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validateRequest($request);
-        $data = $request->all();
+        $cliente = Cliente::findOrFail($id);
+        $cliente->update($request->except('foto'));
 
-        Cliente::updateOrCreate(['id' => $id], $data);
+        if ($request->hasFile('foto')) {
+            if (!empty($cliente->foto) && file_exists(storage_path('app/public/cliente/'.$cliente->foto))) {
+                unlink(storage_path('app/public/cliente/'.$cliente->foto));
+            }
 
-        return redirect('cliente');
+            $arquivo = $request->file('foto');
+            $nomeArquivo = uniqid().'.'.$arquivo->extension();
+            $arquivo->move(storage_path('app/public/cliente'), $nomeArquivo);
+
+            $cliente->foto = $nomeArquivo;
+            $cliente->save();
+        }
+
+        return redirect()->route('cliente.index')->with('success', 'Carro atualizado com sucesso!');
     }
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $dado = Cliente::findOrFail($id);
-        $dado->delete();
+        DB::beginTransaction();
 
-        return redirect('cliente');
+        try {
+            $cliente = Cliente::with(['carros', 'servicos'])->findOrFail($id);
+
+            foreach ($cliente->servicos as $servico) {
+                $servico->delete();
+            }
+
+            foreach ($cliente->carros as $carro) {
+                if (!empty($carro->foto) && Storage::disk('public')->exists('carro/' . $carro->foto)) {
+                    Storage::disk('public')->delete('carro/' . $carro->foto);
+                }
+                $carro->delete();
+            }
+
+            if (!empty($cliente->foto) && Storage::disk('public')->exists('cliente/' . $cliente->foto)) {
+                Storage::disk('public')->delete('cliente/' . $cliente->foto);
+            }
+
+            $cliente->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Cliente excluído com sucesso!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Erro ao excluir cliente: ' . $e->getMessage());
+        }
     }
 
     public function search(Request $request)

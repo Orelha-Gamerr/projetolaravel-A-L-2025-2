@@ -25,7 +25,7 @@
     <!-- Formulário -->
     <div class="card shadow-sm border-0">
         <div class="card-body">
-            <form action="{{ $action }}" method="post">
+            <form action="{{ $action }}" method="post" enctype="multipart/form-data">
                 @csrf
 
                 @if (!empty($dado->id))
@@ -58,6 +58,15 @@
                         <label for="endereco" class="form-label fw-semibold">Endereço:</label>
                         <input type="text" id="endereco" name="endereco" class="form-control" value="{{ old('endereco', $dado->endereco ?? '')  }}" required>
                     </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="foto" class="form-label fw-semibold">Foto do Cliente:</label>
+                    <input type="file" id="foto" name="foto" class="form-control">
+
+                    @if(!empty($dado->foto))
+                        <img src="{{ asset('storage/carros/' . $dado->foto) }}" class="img-thumbnail mt-2" width="120">
+                    @endif
                 </div>
 
                 <div class="row mt-4">

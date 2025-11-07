@@ -47,18 +47,21 @@
 </head>
 <body>
 
-    <!-- Título do Documento -->
     <h1>{{ $titulo }}</h1>
 
-    <!-- Dados do Cliente e Serviço -->
     <div class="header">
         <p class="info"><strong>Cliente:</strong> {{ $servico->cliente->nome }}</p>
+        <p class="info">
+            <img src="{{ public_path('storage/cliente/' . $servico->cliente->foto) }}" width="80">
+        </p>
         <p class="info"><strong>Telefone:</strong> {{ $servico->cliente->telefone }}</p>
         <p class="info"><strong>Veículo:</strong> {{ $servico->carro->placa }}</p>
+        <p class="info">
+            <img src="{{ public_path('storage/carros/' . $servico->carro->foto) }}" width="90%">
+        </p>
         <p class="info"><strong>Data do Serviço:</strong> {{ \Carbon\Carbon::parse($servico->data_servico)->format('d/m/Y') }}</p>
     </div>
 
-    <!-- Tabela com os Detalhes do Serviço -->
     <table>
         <tr>
             <th>Categoria</th>
@@ -69,19 +72,14 @@
             </td>
         </tr>
         <tr>
-            <th>Descrição</th>
-            <td>{{ $servico->descricao }}</td>
-        </tr>
-        <tr>
             <th>Preço</th>
             <td>R$ {{ number_format($servico->valor, 2, ',', '.') }}</td>
         </tr>
     </table>
 
-    <!-- Observações (caso tenha) -->
     <div class="footer">
-        <p class="section-title">Observações:</p>
-        <p>{{ $servico->observacoes ?? 'Nenhuma observação.' }}</p>
+        <p class="section-title">Descrição:</p>
+        <p>{{ $servico->descricao ?? 'Nenhuma observação.' }}</p>
     </div>
 
 </body>

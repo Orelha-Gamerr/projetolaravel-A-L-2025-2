@@ -58,6 +58,7 @@
                             <th>Placa</th>
                             <th>Marca</th>
                             <th>Modelo</th>
+                            <th>Foto</th>
                             <th>Ano</th>
                             <th>Renavam</th>
                             <th>Cliente</th>
@@ -72,6 +73,13 @@
                                 <td class="fw-bold">{{$item->placa}}</td>
                                 <td>{{$item->marca}}</td>
                                 <td>{{$item->modelo}}</td>
+                                <td>
+                                    @if(!empty($item->foto))
+                                        <img src="{{ asset('storage/carros/' . $item->foto) }}" width="60" class="rounded shadow-sm">
+                                    @else
+                                        <span class="text-muted">Sem foto</span>
+                                    @endif
+                                </td>
                                 <td>{{$item->ano}}</td>
                                 <td>{{$item->renavam}}</td>
                                 <td>

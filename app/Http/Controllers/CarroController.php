@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carro;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CarroController extends Controller
 {
@@ -38,10 +39,19 @@ class CarroController extends Controller
     {
         $this->validateRequest($request);
 
-        Carro::create($request->all());
+        $carro = Carro::create($request->except('foto'));
+
+        if ($request->hasFile('foto')) {
+            $arquivo = $request->file('foto');
+            $nomeArquivo = uniqid().'.'.$arquivo->extension();
+            $arquivo->move(storage_path('app/public/carros'), $nomeArquivo);
+            $carro->foto = $nomeArquivo;
+            $carro->save();
+        }
 
         return redirect()->route('carro.index')->with('success', 'Carro cadastrado com sucesso!');
     }
+
 
     public function edit(string $id)
     {
@@ -53,19 +63,37 @@ class CarroController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validateRequest($request);
-
         $carro = Carro::findOrFail($id);
-        $carro->update($request->all());
+        $carro->update($request->except('foto'));
+
+        if ($request->hasFile('foto')) {
+            if (!empty($carro->foto) && file_exists(storage_path('app/public/carros/'.$carro->foto))) {
+                unlink(storage_path('app/public/carros/'.$carro->foto));
+            }
+
+            $arquivo = $request->file('foto');
+            $nomeArquivo = uniqid().'.'.$arquivo->extension();
+            $arquivo->move(storage_path('app/public/carros'), $nomeArquivo);
+
+            $carro->foto = $nomeArquivo;
+            $carro->save();
+        }
 
         return redirect()->route('carro.index')->with('success', 'Carro atualizado com sucesso!');
     }
 
-    public function destroy(string $id)
-    {
-        $dado = Carro::findOrFail($id);
-        $dado->delete();
 
-        return redirect()->route('carro.index')->with('success', 'Carro excluído com sucesso!');
+    public function destroy($id)
+    {
+        $carro = Carro::findOrFail($id);
+
+        if ($carro->foto && Storage::disk('public')->exists('carro/' . $carro->foto)) {
+            Storage::disk('public')->delete('carro/' . $carro->foto);
+        }
+
+        $carro->delete();
+
+        return redirect()->back()->with('success', 'Carro excluído com sucesso!');
     }
 
     public function search(Request $request)
