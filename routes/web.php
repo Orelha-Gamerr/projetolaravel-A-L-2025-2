@@ -21,6 +21,7 @@ Route::post('/servico/search', [ServicoController::class, 'search'])->name('serv
 Route::delete('/servico/{id}', [ServicoController::class, 'destroy'])->name('servico.destroy');
 Route::get('/servico/chart', [ServicoController::class, 'chart'])->name('servico.chart');
 Route::get('/servico/report/{id}', [ServicoController::class, 'report'])->name('servico.report');
+Route::get('/servico/relatorio/pdf', [ServicoController::class, 'gerarPdf'])->name('servico.relatorio.pdf');
 
 Route::get('/mecanico', [MecanicoController::class, 'index'])->name('mecanico.index');
 Route::get('/mecanico/create', [MecanicoController::class, 'create'])->name('mecanico.create');

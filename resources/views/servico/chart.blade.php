@@ -31,6 +31,12 @@
                     </select>
                 </div>
             </form>
+            <div class="col-auto">
+                <a href="{{ route('servico.relatorio.pdf', ['ano' => $anoSelecionado ?? date('Y')]) }}" 
+                class="btn btn-danger">
+                    <i class="fa-solid fa-file-pdf"></i> Gerar PDF
+                </a>
+            </div>
         </div>
     </div>
 

@@ -192,4 +192,22 @@ class ServicoController extends Controller
 
         return $pdf->download('OS_' . $servico->id . '.pdf');
     }
+
+    public function gerarPdf(Request $request, \App\Charts\ServicoChart $chart)
+    {
+        $ano = $request->get('ano', date('Y'));
+
+        $servicos = Servico::with(['cliente', 'carro', 'categorias'])
+                    ->whereYear('data_servico', $ano)
+                    ->orderBy('data_servico')
+                    ->get();
+
+        $titulo = "Relatório de Serviços - Ano {$ano}";
+
+        $pdf = PDF::loadView('servico.relatorio', compact('servicos', 'titulo', 'ano'))
+                ->setPaper('a4', 'portrait');
+
+        return $pdf->download("Relatorio_Servicos_{$ano}.pdf");
+    }
+
 }
